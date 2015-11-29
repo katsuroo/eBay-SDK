@@ -1,5 +1,5 @@
 {
-  "name": "eBay SDK",
+  "name": "eBay-SDK",
   "version": "1.0.0",
   "description": "Promise wrapped ebay api",
   "main": "index.js",
