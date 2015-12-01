@@ -1,7 +1,7 @@
 {
-  "name": "eBay SDK",
-  "version": "1.0.0",
-  "description": "Promise wrapped ebay api",
+  "name": "eBay-SDK",
+  "version": "0.2.0",
+  "description": "Promise wrapped ebay finding api",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,13 +12,11 @@
   "author": "John Wu",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^2.9.34",
     "lodash": "^3.10.0",
     "request": "^2.60.0",
     "request-promise": "^0.4.3"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "chai-as-promised": "^5.1.0"
+    "chai": "^3.2.0"
   }
 }

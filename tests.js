@@ -1,5 +1,6 @@
 var expect = require('chai').expect,
-    app = require('./index.js');
+    app = require('./index.js'),
+    fs = require('fs');
 
 describe('Module tests', function() {
   before(function(done){
@@ -73,18 +74,36 @@ describe('Module tests', function() {
   });
 
   describe('Finding api', function(){
-    it('Tests ebay call *Internet connection required', function(done){
-      this.timeout(10000);
+    it('Product search *Internet connection required', function(done){
+      this.timeout(5000);
       var call = 'findCompletedItems';
-      var options = {keywords: 'mario'};
+      var options = {
+        'productId.type': 'ISBN',
+        'productId': '0545139708'
+      };
       ebay.finding(call, options)
-      .then(function(res){
-        expect(res).to.exist;
-        done();
-      })
-      .catch(function(err){
-        expect(err).to.be.undefined;
-      });
+        .then(function(res){
+      		expect(res.findCompletedItemsResponse[0].ack[0]).to.equal('Success');
+    		  done();
+        })
+      	.catch(function(err){
+        	expect(err).to.be.undefined;
+      	});
+    });
+    it('Keyword search *Internet connection required', function(done){
+      this.timeout(5000);
+      var call = 'findCompletedItems';
+      var options = {
+        keywords: 'iphone6'
+      };
+      ebay.finding(call, options)
+        .then(function(res){
+      		expect(res.findCompletedItemsResponse[0].ack[0]).to.equal('Success');
+    		  done();
+        })
+      	.catch(function(err){
+        	expect(err).to.be.undefined;
+      	});
     });
   });
 });

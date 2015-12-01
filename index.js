@@ -9,25 +9,37 @@ var App = function(params){
 
   this.endpoints ={
       production:{
-        finding: _.has(params, 'endpoints.production.finding') ? params.endpoints.production.finding : 'http://svcs.ebay.com/services/search/FindingService/v1'
+        finding: _.has(params, 'endpoints.production.finding')
+            ? params.endpoints.production.finding
+            : 'http://svcs.ebay.com/services/search/FindingService/v1'
       },
       sandbox:{
-        finding: _.has(params, 'endpoints.sandbox.finding') ? params.endpoints.sandbox.finding : 'http://svcs.sandbox.ebay.com/services/search/FindingService/v1'
+        finding: _.has(params, 'endpoints.sandbox.finding')
+            ? params.endpoints.sandbox.finding
+            : 'http://svcs.sandbox.ebay.com/services/search/FindingService/v1'
       }
     };
 
   this.config = {
     endpoints: (params.sandbox === true ? this.endpoints.sandbox : this.endpoints.production),
     credentials:{
-    'SECURITY-APPNAME': params['SECURITY-APPNAME'] || null,
-    'SERVICE-VERSION': params['SERVICE-VERSION'] || '1.13.0',
-    'RESPONSE-DATA-FORMAT': params['RESPONSE-DATA-FORMAT'] || 'JSON'
+      'SECURITY-APPNAME': params['SECURITY-APPNAME'] || null,
+      'SERVICE-VERSION': params['SERVICE-VERSION'] || '1.13.0',
+      'RESPONSE-DATA-FORMAT': params['RESPONSE-DATA-FORMAT'] || 'JSON'
     }
   };
 };
 
-
 App.prototype = {
+  // Finding API
+  finding: function finding (call, option) {
+
+    this.callValidation(call, option);
+
+    var url = this.config.endpoints.finding + this.buildQuery(call, option);
+
+    return request({json: true, uri: url});
+  },
 
   // Validates passed in configuration parameters upon initialization
   configValidations: function configValidations(params) {
@@ -55,15 +67,6 @@ App.prototype = {
     }
   },
 
-  finding: function finding (call, option) {
-
-      this.callValidation(call, option);
-
-      var url = this.config.endpoints.finding + this.buildQuery(call, option);
-
-      return request(url);
-  },
-
   // Compares the passed in api call parameters to the validation list
   callValidation: function callValidation (call, option) {
     // Check call API name
@@ -71,7 +74,7 @@ App.prototype = {
 
     // Check call options by comparing to the API list
     _.each(option, function(val, key) {
-      if (!_.find(validationList[call], function(val){ return val == key})) {
+      if (validationList[call].indexOf(key) === -1) {
         throw new Error('Invalid call option, check spelling')
       }
     });
@@ -79,10 +82,14 @@ App.prototype = {
 
   // Builds query from ebay credentials and call parameters
   buildQuery: function buildQuery (call, option) {
-
     var operation = '?OPERATION-NAME=' + call;
-    var credentials = _.map(this.config.credentials, function(v, k) {return '&' + k + '=' + v}).join('');
-    var options = _.map(option, function(v, k) {return '&' + k + '=' + v}).join('');
+    var credentials = _.map(this.config.credentials, function(v, k) { return '&' + k + '=' + v }).join('');
+    var options = _.map(option, function(v, k) {
+      // Add @ to options that contain attributes
+      k = k.replace(/\./i, '.@');
+      
+      return '&' + k + '=' + v
+    }).join('');
 
     return operation + credentials + options;
   }
