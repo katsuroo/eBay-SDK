@@ -2,6 +2,10 @@
   "name": "ebay-sdk",
   "version": "0.2.0",
   "description": "Promise wrapped ebay finding api",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/katsuroo/eBay-SDK.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
