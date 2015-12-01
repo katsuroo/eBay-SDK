@@ -21,7 +21,7 @@ var customEndpoints = {
 			finding: 'xyz.com'
 		},
 		sandbox: {
-			finding
+			finding: 'abc.com'
 		}
 	}
 }
