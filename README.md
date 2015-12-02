@@ -1,15 +1,16 @@
-##eBay Finding API SDK
+<h2>eBay Finding API SDK<h2>
 
 Currently only supporting the finding api, other services will be implemented in the future. Pull requests are very much welcome :)
 
-**new** ebay(*{ config (object) }*)
+**new** ebay({ *config (object)* })
 
 The constructor function takes in a object literal for the following settings
 
 ***eBay configurations***
-*SECURITY-APPNAME (required)* : eBay developer key goes here.<br>
-*SERVICE-VERSION (default: 1.13.0)* : eBay api version to use <br>
-*RESPONSE-DATA-FORMAT (default: JSON)* : supports JSON or XML<br>
+
+**SECURITY-APPNAME**  ( *required* ) : eBay developer key goes here.<br>
+**SERVICE-VERSION**  ( *default: 1.13.0* ) : eBay api version to use <br>
+**RESPONSE-DATA-FORMAT**  ( *default: JSON* ) : supports JSON or XML<br>
 
 ***Endpoint configurations***
 By default the endpoints are already coded into the sdk, however in the event that you want to configurate it you can do so by passing in the endpoints property with the config object.
@@ -27,14 +28,36 @@ var customEndpoints = {
 }
 ```
 
+***Request configuration***
+
+The library uses request-promise to do the api calls under the hood. To configurate the options for the request call you can either pass in an object liberal to request parameter during the library instantiation or as a third parameter when you call the api.
+
+```
+METHOD 1 ( define in ebay config )
+
+var ebayConfig = {
+	'SECURITY-APPNAME': devKey,
+	request: {
+		json: true,
+		uri: 'xyz.com'
+	}
+}
+
+METHOD 2 ( define in third parameter )
+
+ebay.finding('findCompletedItems', { keywords: iphone6 }, { json: false })
+
+```
+
 ***Calling API***
 
 ***ebay.finding( api name (string), { search arguments (object) })***
 
-[click here for list of api]('http://developer.ebay.com/DevZone/finding/CallRef/index.html')
-[click here for list of search arguments for each api]('http://developer.ebay.com/DevZone/finding/CallRef/index.html')
+[click here for list of api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)<br>
+[click here for list of search arguments for each api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)
 
-####Sample
+
+<h4>Sample<h4>
 ```
 var sdk = require('ebay-sdk');
 

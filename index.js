@@ -28,17 +28,25 @@ var App = function(params){
       'RESPONSE-DATA-FORMAT': params['RESPONSE-DATA-FORMAT'] || 'JSON'
     }
   };
+  
+  this.requestConfig = params['request'] || null;
 };
 
 App.prototype = {
   // Finding API
-  finding: function finding (call, option) {
+  finding: function finding (call, option, reqOptions) {
 
     this.callValidation(call, option);
 
     var url = this.config.endpoints.finding + this.buildQuery(call, option);
+    
+    // Configuration for request call
+    var customOptions = reqOptions || this.requestConfig;
+    var defaultOptions = { json: true, uri: url };
+    
+    var requestOption = customOptions ? _.merge(defaultOptions, customOptions) : defaultOptions; 
 
-    return request({json: true, uri: url});
+    return request(requestOption);
   },
 
   // Validates passed in configuration parameters upon initialization
