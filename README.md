@@ -1,4 +1,4 @@
-<h2>eBay Finding API SDK<h2>
+**eBay Finding API SDK**
 
 Currently only supporting the finding api, other services will be implemented in the future. Pull requests are very much welcome :)
 
@@ -6,7 +6,7 @@ Currently only supporting the finding api, other services will be implemented in
 
 The constructor function takes in a object literal for the following settings
 
-***eBay configurations***
+**eBay Configurations**
 
 **SECURITY-APPNAME**  ( *required* ) : eBay developer key goes here.<br>
 **SERVICE-VERSION**  ( *default: 1.13.0* ) : eBay api version to use <br>
@@ -28,7 +28,7 @@ var customEndpoints = {
 }
 ```
 
-***Request configuration***
+**Request Configuration**
 
 The library uses request-promise to do the api calls under the hood. To configurate the options for the request call you can either pass in an object liberal to request parameter during the library instantiation or as a third parameter when you call the api.
 
@@ -49,15 +49,16 @@ ebay.finding('findCompletedItems', { keywords: iphone6 }, { json: false })
 
 ```
 
-***Calling API***
+**Calling API**
 
-***ebay.finding( api name (string), { search arguments (object) })***
+**ebay.finding( api name (string), { search arguments (object) })**
 
 [click here for list of api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)<br>
 [click here for list of search arguments for each api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)
 
 
-<h4>Sample<h4>
+**Sample**
+
 ```
 var sdk = require('ebay-sdk');
 
