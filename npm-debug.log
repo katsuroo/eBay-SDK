@@ -1,0 +1,101 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/johnWu/.nvm/versions/node/v5.0.0/bin/node',
+1 verbose cli   '/Users/johnWu/.nvm/versions/node/v5.0.0/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.3.6
+3 info using node@v5.0.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/johnWu/Projects/eBay-SDK',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/johnWu/.npm/ebay-sdk/0.2.1/package.tgz not in flight; packing
+9 info lifecycle ebay-sdk@0.2.1~prepublish: ebay-sdk@0.2.1
+10 silly lifecycle ebay-sdk@0.2.1~prepublish: no script for prepublish, continuing
+11 verbose tar pack [ '/Users/johnWu/.npm/ebay-sdk/0.2.1/package.tgz',
+11 verbose tar pack   '/Users/johnWu/Projects/eBay-SDK' ]
+12 verbose tarball /Users/johnWu/.npm/ebay-sdk/0.2.1/package.tgz
+13 verbose folder /Users/johnWu/Projects/eBay-SDK
+14 verbose addLocalTarball adding from inside cache /Users/johnWu/.npm/ebay-sdk/0.2.1/package.tgz
+15 silly cache afterAdd ebay-sdk@0.2.1
+16 verbose afterAdd /Users/johnWu/.npm/ebay-sdk/0.2.1/package/package.json not in flight; writing
+17 verbose afterAdd /Users/johnWu/.npm/ebay-sdk/0.2.1/package/package.json written
+18 silly publish { name: 'ebay-sdk',
+18 silly publish   version: '0.2.1',
+18 silly publish   description: 'Promise wrapped ebay finding api',
+18 silly publish   main: 'index.js',
+18 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+18 silly publish   keywords: [ 'ebay' ],
+18 silly publish   author: { name: 'John Wu' },
+18 silly publish   license: 'ISC',
+18 silly publish   dependencies:
+18 silly publish    { lodash: '^3.10.0',
+18 silly publish      request: '^2.60.0',
+18 silly publish      'request-promise': '^0.4.3' },
+18 silly publish   devDependencies: { chai: '^3.2.0' },
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'git+https://github.com/katsuroo/eBay-SDK.git' },
+18 silly publish   readme: '<h2>eBay Finding API SDK<h2>\n\nCurrently only supporting the finding api, other services will be implemented in the future. Pull requests are very much welcome :)\n\n**new** ebay({ *config (object)* })\n\nThe constructor function takes in a object literal for the following settings\n\n***eBay configurations***\n\n**SECURITY-APPNAME**  ( *required* ) : eBay developer key goes here.<br>\n**SERVICE-VERSION**  ( *default: 1.13.0* ) : eBay api version to use <br>\n**RESPONSE-DATA-FORMAT**  ( *default: JSON* ) : supports JSON or XML<br>\n\n***Endpoint configurations***\nBy default the endpoints are already coded into the sdk, however in the event that you want to configurate it you can do so by passing in the endpoints property with the config object.\n\n```\nvar customEndpoints = {\n\tendpoints: {\n\t\tproduction: {\n\t\t\tfinding: \'xyz.com\'\n\t\t},\n\t\tsandbox: {\n\t\t\tfinding: \'abc.com\'\n\t\t}\n\t}\n}\n```\n\n***Request configuration***\n\nThe library uses request-promise to do the api calls under the hood. To configurate the options for the request call you can either pass in an object liberal to request parameter during the library instantiation or as a third parameter when you call the api.\n\n```\nMETHOD 1 ( define in ebay config )\n\nvar ebayConfig = {\n\t\'SECURITY-APPNAME\': devKey,\n\trequest: {\n\t\tjson: true,\n\t\turi: \'xyz.com\'\n\t}\n}\n\nMETHOD 2 ( define in third parameter )\n\nebay.finding(\'findCompletedItems\', { keywords: iphone6 }, { json: false })\n\n```\n\n***Calling API***\n\n***ebay.finding( api name (string), { search arguments (object) })***\n\n[click here for list of api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)<br>\n[click here for list of search arguments for each api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)\n\n\n<h4>Sample<h4>\n```\nvar sdk = require(\'ebay-sdk\');\n\nvar devKey = xxxxxxxxx-xxxx-xxxx-xxxxxxxxxxx;\nvar config = {\n\t\'SECURITY-APPNAME\': devKey,\n\t\'SERVICE-VERSION\': (optional),\n\t\'RESPONSE-DATA-FORMAT\': (optional, defaults to JSON)\n\t\'sandbox\': true (defaults to false)\n}\n\nvar ebay = new sdk(config);\n\nvar callOptions = {\n\tkeywords: \'iPhone6\'\n};\nvar callApi = \'findCompletedItems\';\n\nebay.finding(callApi, callOptions)\n\t.then(function(res) {\n\t\tconsole.log(res);\n\t})\n\t.catch(function(err) {\n\t\tconsole.log(err);\n\t}\n```\n\n\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: '73b43595e5f40fb8fd7c135010db3b970921b672',
+18 silly publish   bugs: { url: 'https://github.com/katsuroo/eBay-SDK/issues' },
+18 silly publish   homepage: 'https://github.com/katsuroo/eBay-SDK#readme',
+18 silly publish   _id: 'ebay-sdk@0.2.1',
+18 silly publish   _shasum: '3c63a98a24c63b6b5f2823ede9994dfe8f55a7ad',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 silly mapToRegistry name ebay-sdk
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/ebay-sdk
+24 verbose publish registryBase https://registry.npmjs.org/
+25 silly publish uploading /Users/johnWu/.npm/ebay-sdk/0.2.1/package.tgz
+26 verbose request uri https://registry.npmjs.org/ebay-sdk
+27 verbose request sending authorization for write operation
+28 info attempt registry request try #1 at 5:45:33 PM
+29 verbose request using bearer token for auth
+30 verbose request id 209d27db8b4ed142
+31 http request PUT https://registry.npmjs.org/ebay-sdk
+32 http 403 https://registry.npmjs.org/ebay-sdk
+33 verbose headers { 'content-type': 'application/json',
+33 verbose headers   'cache-control': 'max-age=60',
+33 verbose headers   'content-length': '95',
+33 verbose headers   'accept-ranges': 'bytes',
+33 verbose headers   date: 'Wed, 02 Dec 2015 22:45:34 GMT',
+33 verbose headers   via: '1.1 varnish',
+33 verbose headers   connection: 'keep-alive',
+33 verbose headers   'x-served-by': 'cache-iad2127-IAD',
+33 verbose headers   'x-cache': 'MISS',
+33 verbose headers   'x-cache-hits': '0',
+33 verbose headers   'x-timer': 'S1449096333.882758,VS0,VE933' }
+34 verbose request invalidating /Users/johnWu/.npm/registry.npmjs.org/ebay-sdk on PUT
+35 error publish Failed PUT 403
+36 verbose stack Error: "You cannot publish over the previously published version 0.2.1." : ebay-sdk
+36 verbose stack     at makeError (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+36 verbose stack     at CachingRegistryClient.<anonymous> (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+36 verbose stack     at Request._callback (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+36 verbose stack     at Request.self.callback (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/request/request.js:198:22)
+36 verbose stack     at emitTwo (events.js:87:13)
+36 verbose stack     at Request.emit (events.js:172:7)
+36 verbose stack     at Request.<anonymous> (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/request/request.js:1063:14)
+36 verbose stack     at emitOne (events.js:82:20)
+36 verbose stack     at Request.emit (events.js:169:7)
+36 verbose stack     at IncomingMessage.<anonymous> (/Users/johnWu/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+37 verbose statusCode 403
+38 verbose pkgid ebay-sdk
+39 verbose cwd /Users/johnWu/Projects/eBay-SDK
+40 error Darwin 14.5.0
+41 error argv "/Users/johnWu/.nvm/versions/node/v5.0.0/bin/node" "/Users/johnWu/.nvm/versions/node/v5.0.0/bin/npm" "publish"
+42 error node v5.0.0
+43 error npm  v3.3.6
+44 error code E403
+45 error "You cannot publish over the previously published version 0.2.1." : ebay-sdk
+46 error If you need help, you may report this error at:
+46 error     <https://github.com/npm/npm/issues>
+47 verbose exit [ 1, true ]
