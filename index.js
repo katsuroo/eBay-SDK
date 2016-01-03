@@ -18,7 +18,7 @@ var App = function(params){
             ? params.endpoints.sandbox.finding
             : 'http://svcs.sandbox.ebay.com/services/search/FindingService/v1'
       }
-    };
+   };
 
   this.config = {
     endpoints: (params.sandbox === true ? this.endpoints.sandbox : this.endpoints.production),
@@ -28,7 +28,7 @@ var App = function(params){
       'RESPONSE-DATA-FORMAT': params['RESPONSE-DATA-FORMAT'] || 'JSON'
     }
   };
-  
+
   this.requestConfig = params['request'] || null;
 };
 
@@ -39,12 +39,12 @@ App.prototype = {
     this.callValidation(call, option);
 
     var url = this.config.endpoints.finding + this.buildQuery(call, option);
-    
+
     // Configuration for request call
     var customOptions = reqOptions || this.requestConfig;
     var defaultOptions = { json: true, uri: url };
-    
-    var requestOption = customOptions ? _.merge(defaultOptions, customOptions) : defaultOptions; 
+
+    var requestOption = customOptions ? _.merge(defaultOptions, customOptions) : defaultOptions;
 
     return request(requestOption);
   },
@@ -94,8 +94,9 @@ App.prototype = {
     var credentials = _.map(this.config.credentials, function(v, k) { return '&' + k + '=' + v }).join('');
     var options = _.map(option, function(v, k) {
       // Add @ to options that contain attributes
-      k = k.replace(/\./i, '.@');
-      
+      var subfield = /\.(\w*)/.exec(k);
+      if (subfield && validationList.attributes.indexOf(subfield[1]) !== -1) k = k.replace(/\./i, '.@');
+
       return '&' + k + '=' + v
     }).join('');
 

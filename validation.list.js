@@ -15,6 +15,8 @@ module.exports = {
 
   getHistograms: ["categoryId"],
 
-  getSearchKeywordsRecommendation: ["keywords"]
+  getSearchKeywordsRecommendation: ["keywords"],
+
+  attributes: ['type', 'name', 'attribute', 'valueName', 'count', 'currencyId', 'unit', 'gallerySize', 'currencyId']
 };
 
