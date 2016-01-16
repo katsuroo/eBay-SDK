@@ -104,4 +104,10 @@ App.prototype = {
   }
 };
 
-module.exports = App;
+var instance;
+
+module.exports = function(options) {
+  if(!instance) instance = new App(options);
+
+  return instance;
+};

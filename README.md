@@ -2,9 +2,9 @@
 
 Currently only supporting the finding api, other services will be implemented in the future. Pull requests are very much welcome :)
 
-**new** ebay({ *config (object)* })
+***Usage:*** require('ebay-sdk')({config})
 
-The constructor function takes in a object literal for the following settings
+The factory function takes in a object literal for the following settings
 
 **eBay Configurations**
 
@@ -54,14 +54,10 @@ ebay.finding('findCompletedItems', { keywords: iphone6 }, { json: false })
 **ebay.finding( api name (string), { search arguments (object) })**
 
 [click here for list of api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)<br>
-[click here for list of search arguments for each api](http://developer.ebay.com/DevZone/finding/CallRef/index.html)
-
 
 **Sample**
 
 ```
-var sdk = require('ebay-sdk');
-
 var devKey = xxxxxxxxx-xxxx-xxxx-xxxxxxxxxxx;
 var config = {
 	'SECURITY-APPNAME': devKey,
@@ -70,7 +66,7 @@ var config = {
 	'sandbox': true (defaults to false)
 }
 
-var ebay = new sdk(config);
+var ebay = require('ebay-sdk')(config);
 
 var callOptions = {
 	keywords: 'iPhone6'
