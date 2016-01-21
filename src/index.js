@@ -1,6 +1,6 @@
 'use strict';
 const apiMap = require('./api');
-const endPoints = require('./endpoints');
+const {endPoints, serviceVersions} = require('./defaults');
 const normalizeParameters = require('./normalizeParameters');
 const request = require('request-promise');
 const qs = require('qs');
@@ -13,9 +13,9 @@ class Ebay {
 
     this._endPoints = endPoints[sandbox ? 'sandbox' : 'production'];
 
-    let api = _.reduce(apiMap, (prev, cur) => { return prev.concat(_.keys(cur)); }, []);
-
     // Generate methods for all API
+    const api = _.reduce(apiMap, (prev, cur) => { return prev.concat(_.keys(cur)); }, []);
+
     api.forEach(method => {
       let service = _.findKey(apiMap, method);
       this[method] = new Api(method, this._endPoints[service], {devKey, responseFormat, serviceVersion});
@@ -27,22 +27,21 @@ class Ebay {
 class Api {
   constructor(api, endpoint, {devKey, serviceVersion, responseFormat}) {
     this._api = api;
-    this._service = [_.findKey(apiMap, this._api)];
+    this._service = _.findKey(apiMap, this._api);
     this._field = normalizeParameters[this._service];
     this._endPoint = endpoint;
     this._credentials = {
       [this._field.devKey]: devKey,
-      [this._field.serviceVersion]: serviceVersion || '1.13.0',
+      [this._field.serviceVersion]: _.get(serviceVersion, this._service) || serviceVersions[this._service],
       [this._field.responseFormat]: responseFormat || 'JSON'
     };
   }
 
   call(options) {
     // using modified qs here to encode url because of ebay's unconventional api...
-    const operation = this._field.operation + '=' + this._api;
-    const credentials = qs.stringify(this._credentials, {delimiter: '&'});
-    const query = qs.stringify(normalizeQuery(options, this._service + '.' + this._api), {delimiter: '&'});
-    const uri = this._endPoint + '?' + operation + '&' + credentials + '&' + query;
+    const operation = {[this._field.operation]: this._api};
+    const query = normalizeQuery(options, this._service + '.' + this._api);
+    const uri = this._endPoint + '?' + qs.stringify(_.extend(operation, this._credentials, query), {delimiter: '&'});
 
     return request(uri);
   }
@@ -65,7 +64,9 @@ function normalizeQuery(query, path) {
     if (listValue === 'value') accumulator[key] = value;
 
     // Recursively inspect all elements in object
-    if (_.isPlainObject(value) && _.isPlainObject(listValue)) return accumulator[key] = normalizeQuery(value, path + '.' + key);
+    if (_.isPlainObject(value) && _.isPlainObject(listValue)){
+      return accumulator[key] = normalizeQuery(value, path + '.' + key);
+    }
   });
 }
 

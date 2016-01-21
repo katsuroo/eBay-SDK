@@ -4,6 +4,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var apiMap = require('./src/api');
 var ebayModule = require('./src/index');
+var nock = require('nock');
 
 describe('Query Normalizer', function() {
   var normalize = _.curryRight(ebayModule.normalizeQuery)('finding.findCompletedItems');
@@ -30,12 +31,7 @@ describe('Query Normalizer', function() {
   });
 
   it('Add @ to attributes', function() {
-    var attribute = {
-      productId: {
-        type: 'ISBN',
-        name: 'Harry Potter'
-      }
-    };
+    var attribute = {productId: { type: 'ISBN',  name: 'Harry Potter'}};
 
     assert.deepProperty(normalize(attribute), 'productId.@type');
     assert.deepProperty(normalize(attribute), 'productId.@name');
@@ -44,28 +40,49 @@ describe('Query Normalizer', function() {
 
 describe('Api class', function() {
   var Api = ebayModule.Api;
-  var options = {devKey: 'none', serviceVersion: '1.0', responseFormat: 'JSON'};
+  var options = {devKey: 'none', serviceVersion: { finding: '1.0'}, responseFormat: 'JSON'};
+  var api = 'findCompletedItems';
 
   it('public methods', function() {
-    var instance = new Api('findCompletedItems', '', options);
+    var instance = new Api(api, '', options);
 
     assert.property(instance, 'call');
   });
 
   it('constructor', function() {
-    var api = 'findCompletedItems';
     var endPoint = 'http://www.somewhere.com/v1';
     var instance = new Api(api, endPoint, options);
 
     assert.propertyVal(instance, '_api', api);
     assert.propertyVal(instance, '_endPoint', endPoint);
-    assert.property(instance, '_service');
+    assert.propertyVal(instance, '_service', 'finding');
+    assert.deepPropertyVal(instance, '_credentials.SERVICE-VERSION', '1.0');
     assert.property(instance, '_field');
-    assert.property(instance, '_credentials');
+  });
+
+  it('set proper field names and default values for finding api', function() {
+    var instance = new Api(api, 'placeholder', {devKey: 'test'});
+
+    assert.deepPropertyVal(instance, '_credentials.SERVICE-VERSION', '1.13.0');
+    assert.deepPropertyVal(instance, '_credentials.RESPONSE-DATA-FORMAT', 'JSON');
+    assert.deepPropertyVal(instance, '_credentials.SECURITY-APPNAME', 'test');
+  });
+
+  it('set proper field names default values for shopping api', function() {
+    var instance = new Api('GetCategoryInfo', 'placeholder', {devKey: 'pokemon'});
+    assert.deepPropertyVal(instance, '_credentials.version', '949');
+    assert.deepPropertyVal(instance, '_credentials.responseencoding', 'JSON');
+    assert.deepPropertyVal(instance, '_credentials.appid', 'pokemon');
   });
 
   it('call methods returns a request object', function() {
-    var instance = new Api('findCompletedItems', 'http://www.somewhere.com/v1', options);
+    nock('http://www.google.com')
+      .persist()
+      .get('/services')
+      .query(true)
+      .reply(200, 'response');
+
+    var instance = new Api('findCompletedItems', 'http://www.google.com/services', {devKey: 'xxxxxx'});
     var query = {keywords: 'iphone'};
     var call = instance.call(query);
 
