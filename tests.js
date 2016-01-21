@@ -1,126 +1,136 @@
-var expect = require('chai').expect,
-    app = require('./index.js'),
-    fs = require('fs');
+var _ = require('lodash');
+var sinon = require('sinon');
+var chai = require('chai');
+var assert = chai.assert;
+var apiMap = require('./src/api');
+var ebayModule = require('./src/index');
 
-describe('Module tests', function() {
-  before(function(done){
-    devKey = 'devdummy-24f2-47f4-a685-25d207cf23fe';
-    ebay = new app({'SECURITY-APPNAME': devKey, sandbox: true});
-    done();
+describe('Query Normalizer', function() {
+  var normalize = _.curryRight(ebayModule.normalizeQuery)('finding.findCompletedItems');
+
+  it('Throw error when argument is not an object literal', function() {
+    assert.throw(function(){ normalize(123); }, 'Query must be an object literal');
   });
 
-  describe('Config Validations', function() {
-    before(function (done) {
-      config = ebay.configValidations;
-      done();
+  it('Throw error when empty argument is recieved', function() {
+    var nullInput = function() { normalize({keywords: null}) };
+    var emptyStringInput = function() {normalize({keywords: ''})};
+    var undefinedInput = function() {normalize({keywords: undefined})};
+
+    assert.throw(nullInput, 'keywords argument is empty');
+    assert.throw(emptyStringInput, 'keywords argument is empty');
+    assert.throw(undefinedInput, 'keywords argument is empty');
+  });
+
+  it('Throw error for arguments that are not in the api list', function() {
+    var doesNotExist = {random: 123};
+    var call = function() {normalize(doesNotExist);};
+
+    assert.throw(call, 'Invalid argument: random');
+  });
+
+  it('Add @ to attributes', function() {
+    var attribute = {
+      productId: {
+        type: 'ISBN',
+        name: 'Harry Potter'
+      }
+    };
+
+    assert.deepProperty(normalize(attribute), 'productId.@type');
+    assert.deepProperty(normalize(attribute), 'productId.@name');
+  });
+});
+
+describe('Api class', function() {
+  var Api = ebayModule.Api;
+  var options = {devKey: 'none', serviceVersion: '1.0', responseFormat: 'JSON'};
+
+  it('public methods', function() {
+    var instance = new Api('findCompletedItems', '', options);
+
+    assert.property(instance, 'call');
+  });
+
+  it('constructor', function() {
+    var api = 'findCompletedItems';
+    var endPoint = 'http://www.somewhere.com/v1';
+    var instance = new Api(api, endPoint, options);
+
+    assert.propertyVal(instance, '_api', api);
+    assert.propertyVal(instance, '_endPoint', endPoint);
+    assert.property(instance, '_service');
+    assert.property(instance, '_field');
+    assert.property(instance, '_credentials');
+  });
+
+  it('call methods returns a request object', function() {
+    var instance = new Api('findCompletedItems', 'http://www.somewhere.com/v1', options);
+    var query = {keywords: 'iphone'};
+    var call = instance.call(query);
+
+    assert.property(call, 'pipe');
+    assert.property(call, 'then');
+  });
+});
+
+describe('Ebay class', function() {
+  var App = ebayModule.Ebay;
+  var options = { devKey: 'random123' };
+
+  it('Generate methods from api list', function() {
+    var instance = new App(options);
+    var calls = _.keys(_.values(apiMap)[0]);
+
+    _.each(calls, val => {
+      assert.property(instance, val);
     });
-     it('Reject calls without parameters', function (done) {
-       var option = {};
-       expect(config.bind(this, option)).to.throw('No parameters defined');
-       done();
-     });
-     it('Reject calls without SECURITY-APPNAME', function(done) {
-       var option = {'SERVICE-VERSION':1231212};
-       expect(config.bind(this,option)).to.throw('SECURITY-APPNAME must be defined');
-       done();
-     });
-     it('Reject SECURITY-APPNAME that is not 36 characters', function(done) {
-       var option = {'SECURITY-APPNAME':'1231212'};
-       expect(config.bind(this,option)).to.throw('SECURITY-APPNAME length must be 36 characters long');
-       done();
-     });
-     it('Reject SECURITY-APPNAME that is not a string', function(done) {
-       var option = {'SECURITY-APPNAME':1231212};
-       expect(config.bind(this,option)).to.throw('SECURITY-APPNAME must be a string');
-       done();
-     });
-     it('Reject RESPONSE-DATA-FORMAT that is not xml/json', function(done) {
-       var option = {'SECURITY-APPNAME': devKey , 'RESPONSE-DATA-FORMAT':'hohoho'};
-       expect(config.bind(this,option)).to.throw('RESPONSE-DATA-FORMAT must be xml or json');
-       done();
-     });
-     it('Should pass validation', function(done) {
-       var option = {'SECURITY-APPNAME': devKey , 'RESPONSE-DATA-FORMAT':'json'};
-       expect(config.bind(this, option)).to.not.throw(Error);
-       done();
-     });
-   });
+  });
+});
 
-   describe('Call Validations', function() {
-     before(function(){
-       callValidation = ebay.callValidation;
-     });
-     it('Match with no error', function() {
-       var options = {keywords:'playstation'};
-       expect(callValidation.bind(this,'findCompletedItems',options)).to.not.throw(Error);
-     });
-     it('Throw error for invalid call API name', function() {
-       var options = {keywords:'playstation'};
-       expect(callValidation.bind(this,'thisdoesnotexist',options)).to.throw('Invalid call');
-     });
-     it('Throw error for invalid call options', function() {
-       var options = {mario:'playstation'};
-       expect(callValidation.bind(this,'findCompletedItems',options)).to.throw('Invalid call option, check spelling');
-     });
-   });
+describe('init factory', function() {
+  const init = require('./init');
 
-   describe('Query builder', function(){
-     it('return query', function(){
-       var api = 'findCompletedItems';
-       var options = {keywords: 'mario'};
-       expect(ebay.buildQuery.call(ebay, api, options)).to.equal(
-         '?OPERATION-NAME=' + api + '&SECURITY-APPNAME=' + devKey + '&SERVICE-VERSION=1.13.0&RESPONSE-DATA-FORMAT=JSON&keywords=mario'
-       );
-     });
-     it('add @ in front of attribute', function() {
-       var api = 'findCompletedItems';
-       var options = {'productId.type': 'isbn'};
+  it('Return App', function() {
+    const instance = init({
+      devKey: '123'
+    });
 
-       expect(ebay.buildQuery.call(ebay, api, options)).to.equal(
-         '?OPERATION-NAME=' + api + '&SECURITY-APPNAME=' + devKey + '&SERVICE-VERSION=1.13.0&RESPONSE-DATA-FORMAT=JSON&productId.@type=isbn'
-       );
-     });
-     it('should not add @ to subfields that are not attributes', function() {
-       var api = 'findCompletedItems';
-       var invalidOption = {'aspectFilter.aspectName': 'none'};
+    assert.ok(instance);
+    assert.property(instance, '_endPoints')
+  });
+});
 
-       expect(ebay.buildQuery.call(ebay, api, invalidOption)).to.equal(
-         '?OPERATION-NAME=' + api + '&SECURITY-APPNAME=' + devKey + '&SERVICE-VERSION=1.13.0&RESPONSE-DATA-FORMAT=JSON&aspectFilter.aspectName=none'
-       )
-     })
-   });
+describe('Integration tests **Internet Required**', function() {
+  var options = {
+    devKey: 'devdummy-24f2-47f4-a685-25d207cf23fe',
+    responseFormat: 'JSON',
+    serviceVersion: '1.13.0',
+    sandbox: true
+  };
+  var instance = new ebayModule.Ebay(options);
 
-   describe('Finding api', function(){
-     it('Product search *Internet connection required', function(done){
-       this.timeout(5000);
-       var call = 'findCompletedItems';
-       var options = {
-         'productId.type': 'ISBN',
-         'productId': '0545139708'
-       };
-       ebay.finding(call, options)
-         .then(function(res){
-       		expect(res.findCompletedItemsResponse[0].ack[0]).to.equal('Success');
-     		  done();
-         })
-       	.catch(function(err){
-         	expect(err).to.be.undefined;
-       	});
-     });
-    it('Keyword search *Internet connection required', function(done){
-      this.timeout(5000);
-      var call = 'findCompletedItems';
-      var options = {
-        keywords: 'iphone'
-      };
-      ebay.finding(call, options)
-        .then(function(res){
-      		 expect(res.findCompletedItemsResponse[0].ack[0]).to.equal('Success');
-    		  done();
-        })
-      	.catch(function(err){
-        	expect(err).to.be.undefined;
-      	});
+  it('Finding api', function(done) {
+    this.timeout(10000);
+    var query = {keywords: 'iphone'};
+
+    instance.findCompletedItems.call(query).then(result => {
+      assert.ok(result);
+      done();
+    }).catch(error => {
+      console.log(error);
+    });
+  });
+
+  it('Shopping api', function(done) {
+    this.timeout(10000);
+    var query = {CategoryID: -1};
+
+    instance.GetCategoryInfo.call(query).then(result => {
+      assert.ok(result);
+      done();
+    }).catch(error => {
+      console.log(error);
     });
   });
 });
