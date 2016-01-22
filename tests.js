@@ -2,7 +2,7 @@ var _ = require('lodash');
 var sinon = require('sinon');
 var chai = require('chai');
 var assert = chai.assert;
-var apiMap = require('./src/api');
+var apiMap = require('./src/apiMap');
 var ebayModule = require('./src/index');
 var nock = require('nock');
 

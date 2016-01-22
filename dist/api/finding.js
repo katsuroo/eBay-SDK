@@ -1,3 +1,5 @@
+'use strict';
+
 var outputSelector = {
   ack: 'value',
   aspectHistogramContainer: {
@@ -54,10 +56,10 @@ var outputSelector = {
     totalPages: 'value'
   },
   searchResult: {
-    item:{
+    item: {
       attribute: {
         name: 'value',
-        value: 'value',
+        value: 'value'
       },
       autoPay: 'value',
       charityId: 'value',
@@ -99,7 +101,7 @@ var outputSelector = {
       productId: 'value',
       secondaryCategory: {
         categoryId: 'value',
-        categoryName: 'value',
+        categoryName: 'value'
       },
       sellerInfo: {
         feedbackRatingStar: 'value',
@@ -336,14 +338,5 @@ var finding = {
   }
 };
 
-var shopping = {
-  GetCategoryInfo: {
-    CategoryID: 'value',
-    IncludeSelector: 'value'
-  }
-};
-
-module.exports = {
-  finding,
-  shopping
-};
+module.exports = finding;
+//# sourceMappingURL=finding.js.map

@@ -4,7 +4,7 @@
 API Support
 
  * **Finding** (Full)
- * **Shopping** (Partial)
+ * **Shopping** (Full)
 
 #### Usage:
 

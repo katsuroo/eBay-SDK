@@ -1,5 +1,5 @@
 'use strict';
-const apiMap = require('./api');
+const apiMap = require('./apiMap');
 const {endPoints, serviceVersions} = require('./defaults');
 const normalizeParameters = require('./normalizeParameters');
 const request = require('request-promise');

@@ -6,8 +6,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var apiMap = require('./api');
-var endPoints = require('./endpoints');
+var apiMap = require('./apiMap');
+
+var _require = require('./defaults');
+
+var endPoints = _require.endPoints;
+var serviceVersions = _require.serviceVersions;
+
 var normalizeParameters = require('./normalizeParameters');
 var request = require('request-promise');
 var qs = require('qs');
@@ -28,11 +33,11 @@ var Ebay = function Ebay(_ref) {
 
   this._endPoints = endPoints[sandbox ? 'sandbox' : 'production'];
 
+  // Generate methods for all API
   var api = _.reduce(apiMap, function (prev, cur) {
     return prev.concat(_.keys(cur));
   }, []);
 
-  // Generate methods for all API
   api.forEach(function (method) {
     var service = _.findKey(apiMap, method);
     _this[method] = new Api(method, _this._endPoints[service], { devKey: devKey, responseFormat: responseFormat, serviceVersion: serviceVersion });
@@ -52,20 +57,19 @@ var Api = function () {
     _classCallCheck(this, Api);
 
     this._api = api;
-    this._service = [_.findKey(apiMap, this._api)];
+    this._service = _.findKey(apiMap, this._api);
     this._field = normalizeParameters[this._service];
     this._endPoint = endpoint;
-    this._credentials = (_credentials = {}, _defineProperty(_credentials, this._field.devKey, devKey), _defineProperty(_credentials, this._field.serviceVersion, serviceVersion || '1.13.0'), _defineProperty(_credentials, this._field.responseFormat, responseFormat || 'JSON'), _credentials);
+    this._credentials = (_credentials = {}, _defineProperty(_credentials, this._field.devKey, devKey), _defineProperty(_credentials, this._field.serviceVersion, _.get(serviceVersion, this._service) || serviceVersions[this._service]), _defineProperty(_credentials, this._field.responseFormat, responseFormat || 'JSON'), _credentials);
   }
 
   _createClass(Api, [{
     key: 'call',
     value: function call(options) {
       // using modified qs here to encode url because of ebay's unconventional api...
-      var operation = this._field.operation + '=' + this._api;
-      var credentials = qs.stringify(this._credentials, { delimiter: '&' });
-      var query = qs.stringify(normalizeQuery(options, this._service + '.' + this._api), { delimiter: '&' });
-      var uri = this._endPoint + '?' + operation + '&' + credentials + '&' + query;
+      var operation = _defineProperty({}, this._field.operation, this._api);
+      var query = normalizeQuery(options, this._service + '.' + this._api);
+      var uri = this._endPoint + '?' + qs.stringify(_.extend(operation, this._credentials, query), { delimiter: '&' });
 
       return request(uri);
     }
@@ -92,7 +96,9 @@ function normalizeQuery(query, path) {
     if (listValue === 'value') accumulator[key] = value;
 
     // Recursively inspect all elements in object
-    if (_.isPlainObject(value) && _.isPlainObject(listValue)) return accumulator[key] = normalizeQuery(value, path + '.' + key);
+    if (_.isPlainObject(value) && _.isPlainObject(listValue)) {
+      return accumulator[key] = normalizeQuery(value, path + '.' + key);
+    }
   });
 }
 
