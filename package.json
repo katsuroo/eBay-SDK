@@ -1,6 +1,6 @@
 {
   "name": "ebay-sdk",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Promise wrapped eBay SDK",
   "main": "init.js",
   "scripts": {

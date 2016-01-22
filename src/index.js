@@ -60,13 +60,16 @@ function normalizeQuery(query, path) {
     if (!list[key]) throw new Error('Invalid argument: ' + key);
 
     // Add @ to attributes
-    if (listValue === 'attribute') accumulator['@' + key] = value;
-    if (listValue === 'value') accumulator[key] = value;
+    const prefix = (listValue === 'attribute') ? ['@' + key] : key;
+
+    if (_.isArray(value)) return accumulator[prefix] = value;
 
     // Recursively inspect all elements in object
     if (_.isPlainObject(value) && _.isPlainObject(listValue)){
-      return accumulator[key] = normalizeQuery(value, path + '.' + key);
+      return accumulator[prefix] = normalizeQuery(value, path + '.' + key);
     }
+
+    return accumulator[prefix] = value;
   });
 }
 
