@@ -6,45 +6,82 @@ API Support
  * **Finding** (Full)
  * **Shopping** (Full)
 
-#### Usage:
+## Usage:
 
 ```javascript
 var config = {devKey: xxxxxxx};
 var ebay = require('ebay-sdk')(config);
+var query = {keywords: 'iphone'};
 
 ebay
-  .findCompletedItems // All supported apis are available as methods
-  .call({keywords: 'iphone'})
+  .findCompletedItems // eBay operation
+  .call(query)
+
   // Promise
   .then(function(result) { /* Do Something */ });
+
   // Stream
   .pipe(stream);
 ```
 
-**Initialization**: ```require('ebay-sdk')({config})```
+## Setup:
+```require('ebay-sdk')({config})```
 
 The configuration object takes in the following parameters:
 
-- ***devKey*** (_required_):  
+- ***devKey*** (_required_):
 ebay developer key
-- ***serviceVersion*** (_optional_):   
-takes in object with api service as key and service number as value
-- ***responseFormat*** (_optional_):   
+
+
+- ***serviceVersion*** (_optional_):
+takes in object with api service name as key and service number as value
+
+
+- ***responseFormat*** (_optional_):
 xml or json
 
-**Calls**: ```ebay.[api].call({query})```
+## Call:
+```ebay.[api].call({query})```
+
+Returns a **Request** object
 
 - **api**: All the supported api under the services that are supported, reference ebay api doc for exact names
-- **query**: Key / value pairs all the arguments available to each api
+
+
+- **query**: api arguments in key / value pairs
+
 ```javascript
 var query = {
-  // Nested example
+
+  // Simple example
+  keywords: 'iphone',
+
+  // Complex
   itemFilter: [
-    {name: 'Condition', value: ['New', 'Like New']} // Multiple values for one filter
+    {name: 'Condition', value: ['New', 'Like New']} // Multiple values
     {name: 'ExcludeCategory', value: '132112112'}
-  ],
-  // Simple key value pair
-  keywords: 'iphone'
+  ]
+
 }
 ````
 
+
+## Request:
+Object returned from an api call. It contains the promise / stream interface to interact with results along with other methods to manipulate the request.
+
+#### then
+```request.then([result handler])```
+
+Promise interface to interact with  data
+
+#### Pipe
+```request.pipe([stream])```
+
+Stream interface to interact with  data
+
+#### getAllPages
+```request.getAllPages([raw]).then([result handler])```
+
+Fetches all pages (up to 100) from query.
+
+_consume_ \<boolean>: When set to false, will return an array of raw request objects.

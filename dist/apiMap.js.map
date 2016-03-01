@@ -1,1 +1,0 @@
-{"version":3,"sources":["apiMap.js"],"names":[],"mappings":";;AAAA,OAAO,OAAP,GAAiB;AACf,WAAS,QAAQ,eAAR,CAAT;AACA,YAAU,QAAQ,gBAAR,CAAV;CAFF","file":"apiMap.js","sourcesContent":["module.exports = {\n  finding: require('./api/finding'),\n  shopping: require('./api/shopping')\n};"],"sourceRoot":"/source/"}
