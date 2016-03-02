@@ -90,4 +90,30 @@ describe('Request', function () {
       done();
     });
   });
+
+  it('Get All Entries', done => {
+    const itemFilter = [
+      {name: 'EndTimeFrom', value: '2015-01-01T00:00:00.000Z'},
+      {name: 'EndTimeTo', value: '2015-01-03T00:00:00.000Z'}
+    ];
+
+    const request = generateRequest({itemFilter});
+
+    const getPagesSpy = sinon.spy(request, 'getPages');
+    const entryCountStub = sinon.stub(request, 'getEntryCount');
+    const getAllEntriesSpy = sinon.spy(request, 'getAllEntries');
+
+    entryCountStub.onFirstCall().returns(20000);
+    entryCountStub.onSecondCall().returns(500);
+    entryCountStub.onThirdCall().returns(800);
+
+    request.getAllEntries(true).then(() => {
+      assert.equal(getAllEntriesSpy.calledThrice, true);
+      assert.equal(entryCountStub.calledThrice, true);
+      assert.equal(getPagesSpy.firstCall.calledWith(1,5), true);
+      assert.equal(getPagesSpy.secondCall.calledWith(1,8), true);
+
+      done();
+    });
+  });
 });

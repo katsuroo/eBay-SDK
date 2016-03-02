@@ -85,3 +85,12 @@ Stream interface to interact with  data
 Fetches all pages (up to 100) from query.
 
 _consume_ \<boolean>: When set to false, will return an array of raw request objects.
+
+#### getAllEntries
+```request.getAllEntries([raw]).then([result handler])```
+
+Fetches all entries from query. Any query that are bigger than the ebay return limit will be split into multiple queries with smaller time ranges.
+
+_consume_ \<boolean>: When set to false, will return an array of raw request objects.
+
+

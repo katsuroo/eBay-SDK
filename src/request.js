@@ -19,10 +19,31 @@ class Request {
     return totalEntries;
   }
 
+  // Fetches all entries from query; Queries that are larger than eBay return limit will be split into smaller queries
+  async getAllEntries(consume = true, query = this._createQuery) {
+    const totalEntries = await this.getEntryCount(query);
+    const chunks       = Math.ceil(totalEntries / MAX_ENTRIES_PER_REQUEST);
+    const pages        = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);
+
+    if (totalEntries <= MAX_ENTRIES_PER_REQUEST) {
+
+      return this.getPages(1, pages, query, consume);
+
+    } else {
+
+      const queries = query().split(chunks)
+                             .map(q => this.getAllEntries(false, () => q));
+
+      const results = _.flatten(await promise.all(queries));
+
+      return consume ? promise.all(results) : results;
+    }
+  }
+
   // Fetches all pages (limited to 100) return from query
   async getAllPages(consume = true) {
     const totalEntries = await this.getEntryCount();
-    const totalPages = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);
+    const totalPages   = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);
 
     return this.getPages(1, totalPages <= 100 ? totalPages : 100, consume);
   }

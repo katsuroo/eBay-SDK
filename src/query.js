@@ -53,6 +53,29 @@ class Query {
     return this;
   }
 
+  /*
+   Splits query by making new queries with smaller time blocks
+   Used to overcome eBay 10000 entry return limit
+   */
+  split(parts) {
+    const endTimeFrom = get(this.getFilter('EndTimeFrom'), 'value'),
+          endTimeTo   = get(this.getFilter('EndTimeTo'), 'value');
+
+    expect(endTimeFrom, 'EndTimeFrom').to.exists;
+    expect(endTimeTo, 'EndTimeTo').to.exists;
+
+    const chunks    = range(0, parts);
+    const chunkSize = moment(endTimeTo).diff(endTimeFrom) / parts;
+
+    return chunks.map(n => {
+      const start = moment(endTimeFrom).add((n * chunkSize), 'ms'),
+            end   = moment(start).add(chunkSize, 'ms');
+
+      return new Query(this._endpoint, this._options).setEndTimeFrom(start)
+                                                     .setEndTimeTo(end);
+    });
+  }
+
   call() {
     const queryString = qs.stringify(this._options, {delimiter: '&'});
 
