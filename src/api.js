@@ -12,7 +12,7 @@ class Api {
   call(q) {
     const query = extend({}, this._requiredFields, normalizeQuery(q, this._apiList));
 
-    return new Request(this._endpoint, query, this._operation);
+    return new Request(this._endpoint, query);
   }
 }
 

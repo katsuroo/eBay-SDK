@@ -25,7 +25,10 @@ ebay
 ```
 
 ## Setup:
-```require('ebay-sdk')({config})```
+
+```
+require('ebay-sdk')({config})
+```
 
 The configuration object takes in the following parameters:
 
@@ -41,7 +44,9 @@ takes in object with api service name as key and service number as value
 xml or json
 
 ## Call:
-```ebay.[api].call({query})```
+```
+ebay.[api].call({query})
+```
 
 Returns a **Request** object
 
@@ -63,31 +68,41 @@ var query = {
   ]
 
 }
-````
+```
+
 
 
 ## Request:
 Object returned from an api call. It contains the promise / stream interface to interact with results along with other methods to manipulate the request.
 
 #### then
-```request.then([result handler])```
+```
+request.then([result handler])
+```
 
 Promise interface to interact with  data
 
 #### Pipe
-```request.pipe([stream])```
+```
+request.pipe([stream])
+```
 
 Stream interface to interact with  data
 
 #### getAllPages
-```request.getAllPages([raw]).then([result handler])```
+```
+request.getAllPages([raw]).then([result handler])
+```
+
 
 Fetches all pages (up to 100) from query.
 
 _consume_ \<boolean>: When set to false, will return an array of raw request objects.
 
 #### getAllEntries
-```request.getAllEntries([raw]).then([result handler])```
+```
+request.getAllEntries([raw]).then([result handler])
+```
 
 Fetches all entries from query. Any query that are bigger than the ebay return limit will be split into multiple queries with smaller time ranges.
 

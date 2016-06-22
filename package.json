@@ -1,13 +1,13 @@
 {
   "name": "ebay-sdk",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "eBay SDK with promise / stream interface",
   "main": "init.js",
   "scripts": {
     "compile": "babel --source-maps inline, -d dist/ src/",
     "lint": "jshint *.js src/*.js",
     "test": "npm run compile && mocha --require source-map-support/register --compilers js:babel-core/register",
-    "prepublish": "npm run test && npm run lint"
+    "prepublish": "npm run test"
   },
   "keywords": [
     "ebay"
