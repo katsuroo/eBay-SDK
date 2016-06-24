@@ -12,7 +12,7 @@ Api = function () {
     q) {
       var query = (0, _util.extend)({}, this._requiredFields, normalizeQuery(q, this._apiList));
 
-      return new _request2.default(this._endpoint, query, this._operation);} }]);return Api;}();
+      return new _request2.default(this._endpoint, query);} }]);return Api;}();
 
 
 
