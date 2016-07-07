@@ -4,8 +4,8 @@ import {extend, get, transform, isPlainObject} from './util';
 
 class Api {
   constructor(endpoint, apiList, requiredFields) {
-    this._endpoint = endpoint;
-    this._apiList = apiList;
+    this._endpoint       = endpoint;
+    this._apiList        = apiList;
     this._requiredFields = requiredFields;
   }
 
@@ -22,7 +22,8 @@ function normalizeQuery(query, apiList) {
   return transform(query, (result, value, field) => {
     const matchedField = apiList[field];
 
-    expect(value, field).to.exist.and.not.empty;
+    expect(value).to.exist.and.not.empty;
+    expect(field).to.exist.and.not.empty;
     expect(matchedField, 'Field ' + field).exist.and.not.empty;
 
     // appends @ to attribute fields

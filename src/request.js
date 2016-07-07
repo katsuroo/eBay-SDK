@@ -14,7 +14,8 @@ class Request {
   async getEntryCount(query = this._createQuery) {
     const [totalEntries] = await query().setEntriesPerPage(1)
                                         .call()
-                                        .then(result => _.pickDeep(result, 'totalEntries'));
+                                        .then(result => _.pickDeep(result, 'totalEntries'))
+                                        .catch(err => console.log(err));
 
     return totalEntries;
   }
@@ -25,9 +26,11 @@ class Request {
     const chunks       = Math.ceil(totalEntries / MAX_ENTRIES_PER_REQUEST);
     const pages        = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);
 
+    if (totalEntries <= 0) return [];
+
     if (totalEntries <= MAX_ENTRIES_PER_REQUEST) {
 
-      return this.getPages(1, pages, query, consume);
+      return this.getPages(1, pages, query, consume)
 
     } else {
 

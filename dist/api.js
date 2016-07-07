@@ -22,7 +22,8 @@ function normalizeQuery(query, apiList) {
   return (0, _util.transform)(query, function (result, value, field) {
     var matchedField = apiList[field];
 
-    (0, _chai.expect)(value, field).to.exist.and.not.empty;
+    (0, _chai.expect)(value).to.exist.and.not.empty;
+    (0, _chai.expect)(field).to.exist.and.not.empty;
     (0, _chai.expect)(matchedField, 'Field ' + field).exist.and.not.empty;
 
     // appends @ to attribute fields

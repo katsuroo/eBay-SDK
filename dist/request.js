@@ -14,7 +14,8 @@ Request = function () {
         query = arguments.length <= 0 || arguments[0] === undefined ? this._createQuery : arguments[0];var _ref, _ref2, 
         totalEntries;return _regenerator2.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return query().setEntriesPerPage(1).
                 call().
-                then(function (result) {return _util2.default.pickDeep(result, 'totalEntries');});case 2:_ref = _context.sent;_ref2 = (0, _slicedToArray3.default)(_ref, 1);totalEntries = _ref2[0];return _context.abrupt('return', 
+                then(function (result) {return _util2.default.pickDeep(result, 'totalEntries');}).
+                catch(function (err) {return console.log(err);});case 2:_ref = _context.sent;_ref2 = (0, _slicedToArray3.default)(_ref, 1);totalEntries = _ref2[0];return _context.abrupt('return', 
 
                 totalEntries);case 6:case 'end':return _context.stop();}}}, _callee, this);}));function getEntryCount(_x) {return ref.apply(this, arguments);}return getEntryCount;}()
 
@@ -31,12 +32,14 @@ Request = function () {
 
 
 
+
+
         queries, 
 
 
-        results;return _regenerator2.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return this.getEntryCount(query);case 2:totalEntries = _context2.sent;chunks = Math.ceil(totalEntries / MAX_ENTRIES_PER_REQUEST);pages = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);if (!(totalEntries <= MAX_ENTRIES_PER_REQUEST)) {_context2.next = 9;break;}return _context2.abrupt('return', this.getPages(1, pages, query, consume));case 9:queries = query().split(chunks).map(function (q) {return _this.getAllEntries(false, function () {return q;});});_context2.t0 = _util2.default;_context2.next = 13;return _bluebird2.default.all(queries);case 13:_context2.t1 = _context2.sent;results = _context2.t0.flatten.call(_context2.t0, _context2.t1);return _context2.abrupt('return', 
+        results;return _regenerator2.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return this.getEntryCount(query);case 2:totalEntries = _context2.sent;chunks = Math.ceil(totalEntries / MAX_ENTRIES_PER_REQUEST);pages = Math.ceil(totalEntries / MAX_ENTRIES_PER_PAGE);if (!(totalEntries <= 0)) {_context2.next = 7;break;}return _context2.abrupt('return', []);case 7:if (!(totalEntries <= MAX_ENTRIES_PER_REQUEST)) {_context2.next = 11;break;}return _context2.abrupt('return', this.getPages(1, pages, query, consume));case 11:queries = query().split(chunks).map(function (q) {return _this.getAllEntries(false, function () {return q;});});_context2.t0 = _util2.default;_context2.next = 15;return _bluebird2.default.all(queries);case 15:_context2.t1 = _context2.sent;results = _context2.t0.flatten.call(_context2.t0, _context2.t1);return _context2.abrupt('return', 
 
-                consume ? _bluebird2.default.all(results) : results);case 16:case 'end':return _context2.stop();}}}, _callee2, this);}));function getAllEntries(_x3, _x4) {return ref.apply(this, arguments);}return getAllEntries;}()
+                consume ? _bluebird2.default.all(results) : results);case 18:case 'end':return _context2.stop();}}}, _callee2, this);}));function getAllEntries(_x3, _x4) {return ref.apply(this, arguments);}return getAllEntries;}()
 
 
 
