@@ -18,20 +18,26 @@
     "babel-runtime": "^6.9.2",
     "check-types": "^7.0.0",
     "lodash": "^4.0.0",
+    "moment": "^2.14.1",
     "qs": "git+https://github.com/katsuroo/qs.git",
     "request": "^2.67.0",
     "request-promise": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.6.0",
     "chai": "^3.2.0",
     "jshint": "^2.9.2",
+    "memorystream": "^0.3.1",
+    "mocha": "^3.0.0",
+    "mockery": "^1.7.0",
     "nock": "^5.2.1",
-    "sinon": "^1.17.2"
+    "sinon": "^1.17.2",
+    "source-map-support": "^0.4.2"
   },
   "repository": {
     "type": "git",

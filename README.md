@@ -91,7 +91,7 @@ Stream interface to interact with  data
 
 #### getAllPages
 ```
-request.getAllPages([raw]).then([result handler])
+request.getAllPages([consume]).then([result handler])
 ```
 
 
@@ -101,7 +101,7 @@ _consume_ \<boolean>: When set to false, will return an array of raw request obj
 
 #### getAllEntries
 ```
-request.getAllEntries([raw]).then([result handler])
+request.getAllEntries([consume]).then([result handler])
 ```
 
 Fetches all entries from query. Any query that are bigger than the ebay return limit will be split into multiple queries with smaller time ranges.

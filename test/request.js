@@ -16,6 +16,14 @@ mockServer(mockHost, mockPath, mockData);
 
 describe('Request', function () {
   const generateRequest = (q) => (new Request(mockHost + mockPath, q || {keywords: 'iphone'}));
+  
+  it('Return promise interface', () => {
+    const request = generateRequest();
+    
+    const result = request.catch(d => {});
+    
+    assert.property(result, 'then');
+  });
 
   it('Return result in promise', done => {
     const request = generateRequest();
