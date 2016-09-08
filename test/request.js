@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import promise from 'bluebird';
 import MemoryStream from 'memorystream';
 import apiList from '../dist/definitions/index';
-import Request from '../dist/Request';
+import Request from '../dist/request';
 import _ from '../dist/util';
 
 // Mock server setup
