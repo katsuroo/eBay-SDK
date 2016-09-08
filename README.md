@@ -72,7 +72,10 @@ var query = {
 
 
 ## Request:
-Object returned from an api call. It contains the promise / stream interface to interact with results along with other methods to manipulate the request.
+Object returned from call. It contains the promise / stream interface to interact with results along with other methods to manipulate the request. 
+
+*Note*: 
+The request is not made until it has been consumed by one of the following methods.
 
 #### then
 ```

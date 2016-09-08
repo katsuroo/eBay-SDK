@@ -3,7 +3,9 @@ import sinon from 'sinon';
 import Ebay from '../dist/index';
 import _ from '../dist/util';
 
-describe('Integration tests', () => {
+describe('Integration tests', function() {
+  this.timeout(10000);
+  
   const options = {
     devKey        : 'devdummy-24f2-47f4-a685-25d207cf23fe',
     responseFormat: 'JSON',
@@ -14,7 +16,6 @@ describe('Integration tests', () => {
   const ebay = new Ebay(options);
 
   it('Finding API', function (done) {
-    this.timeout(10000);
 
     const query = {keywords: 'nexus player'};
 
@@ -26,7 +27,6 @@ describe('Integration tests', () => {
   });
 
   it('Shopping API', function (done) {
-    this.timeout(10000);
 
     const query = {CategoryID: -1};
 

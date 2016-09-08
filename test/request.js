@@ -15,6 +15,8 @@ const mockServer = require('./mocks/server.js');
 mockServer(mockHost, mockPath, mockData);
 
 describe('Request', function () {
+  this.timeout(5000);
+  
   const generateRequest = (q) => (new Request(mockHost + mockPath, q || {keywords: 'iphone'}));
   
   it('Return promise interface', () => {
