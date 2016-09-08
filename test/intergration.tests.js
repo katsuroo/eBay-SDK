@@ -18,8 +18,7 @@ describe('Integration tests', () => {
 
     const query = {keywords: 'nexus player'};
 
-    ebay.findCompletedItems
-        .call(query)
+    ebay.findCompletedItems(query)
         .then(d => {
           assert.property(d, 'findCompletedItemsResponse');
           done();
@@ -31,8 +30,7 @@ describe('Integration tests', () => {
 
     const query = {CategoryID: -1};
 
-    ebay.getCategoryInfo
-        .call(query)
+    ebay.getCategoryInfo(query)
         .then(d => {
           assert.property(d, 'CategoryArray');
           done();

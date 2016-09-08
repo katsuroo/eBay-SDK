@@ -9,13 +9,7 @@ import {fieldNames} from '../dist/constants';
 describe('Api', () => {
   const profile = {devKey: 123};
 
-  it('Interface', () => {
-    const api = new Api('shopping', 'GetUserProfile', 'url', profile);
-
-    assert.property(api, 'call');
-  });
-
-  it('Call returns a promise + stream interface', () => {
+  it('Create returns a promise + stream interface', () => {
     const host = 'http://google.com';
     const path = '/';
     const operation = 'GetUserProfile';
@@ -23,7 +17,7 @@ describe('Api', () => {
 
     mock(host, path, {});
 
-    const call = new Api(operation, host + path, api, profile).call();
+    const call = new Api(operation, host + path, api, profile)();
 
     assert.property(call, 'then');
     assert.property(call, 'on');

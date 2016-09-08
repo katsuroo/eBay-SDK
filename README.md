@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/katsuroo/eBay-SDK.svg?branch=master)](https://travis-ci.org/katsuroo/eBay-SDK)
+
 # eBay SDK
 
 
@@ -14,8 +16,7 @@ var ebay = require('ebay-sdk')(config);
 var query = {keywords: 'iphone'};
 
 ebay
-  .findCompletedItems // eBay operation
-  .call(query)
+  .findCompletedItems(query) // eBay operation
 
   // Promise
   .then(function(result) { /* Do Something */ });
@@ -45,7 +46,7 @@ xml or json
 
 ## Call:
 ```
-ebay.[api].call({query})
+ebay.[api]({query})
 ```
 
 Returns a **Request** object
@@ -58,10 +59,8 @@ Returns a **Request** object
 ```javascript
 var query = {
 
-  // Simple example
   keywords: 'iphone',
 
-  // Complex
   itemFilter: [
     {name: 'Condition', value: ['New', 'Like New']} // Multiple values
     {name: 'ExcludeCategory', value: '132112112'}
