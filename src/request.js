@@ -30,7 +30,7 @@ class Request {
     
     if (totalEntries <= MAX_ENTRIES_PER_REQUEST) {
       
-      return this.getPages(1, pages, query, consume)
+      return this.getPages(1, pages, query, consume);
       
     } else {
       

@@ -1,7 +1,0 @@
-{
-  "laxbreak": "false",
-  "expr": "true",
-  "node": "true",
-  "esnext":"true",
-  "noyield":"true"
-}

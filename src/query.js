@@ -2,7 +2,7 @@ import request from 'request-promise';
 import moment from 'moment';
 import qs from 'qs';
 import {expect} from 'chai';
-import {cloneDeep, castArray, set, get, find, isEmpty, extend, range} from 'lodash';
+import {cloneDeep, castArray, set, get, find, isEmpty, range} from 'lodash';
 
 class Query {
   constructor(endpoint, options) {

@@ -1,6 +1,6 @@
 import Request from './request';
 import {expect} from 'chai';
-import {extend, get, transform, isPlainObject} from './util';
+import {extend, transform, isPlainObject} from './util';
 
 class Api {
   constructor(endpoint, apiList, requiredFields) {
