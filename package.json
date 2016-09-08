@@ -1,6 +1,6 @@
 {
   "name": "ebay-sdk",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "eBay SDK with promise / stream interface",
   "main": "init.js",
   "scripts": {

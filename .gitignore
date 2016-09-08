@@ -1,4 +1,4 @@
 # Dependency directory
 node_modules
+dist
 .idea
-.dist
