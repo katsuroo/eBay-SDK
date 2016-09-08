@@ -34,10 +34,10 @@ class Request {
       
     } else {
       
-      const queries = query().split(chunks)
-                             .map(q => this.getAllEntries(false, () => q));
+      const queryChunks = query().split(chunks)
+                                 .map(q => this.getAllEntries(false, q));
       
-      const results = _.flatten(await promise.all(queries));
+      const results = _.flatten(await promise.all(queryChunks));
       
       return consume ? promise.all(results) : results;
     }

@@ -68,10 +68,10 @@ describe('Query', () => {
 
     const [first, second] = query.split(2);
 
-    assert.equal(getEndTimeFrom(first), '2015-01-01T00:00:00.000Z');
-    assert.equal(getEndTimeTo(first), '2015-01-02T00:00:00.000Z');
+    assert.equal(getEndTimeFrom(first()), '2015-01-01T00:00:00.000Z');
+    assert.equal(getEndTimeTo(first()), '2015-01-02T00:00:00.000Z');
 
-    assert.equal(getEndTimeFrom(second), '2015-01-02T00:00:00.000Z');
-    assert.equal(getEndTimeTo(second), '2015-01-03T00:00:00.000Z');
+    assert.equal(getEndTimeFrom(second()), '2015-01-02T00:00:00.000Z');
+    assert.equal(getEndTimeTo(second()), '2015-01-03T00:00:00.000Z');
   });
 });
