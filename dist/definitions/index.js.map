@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/definitions/index.js"],"names":[],"mappings":"aAAA,OAAO,OAAP,GAAiB;AACf,WAAS,QAAQ,WAAR,CADM;AAEf,YAAU,QAAQ,YAAR,CAFK,EAAjB","file":"index.js","sourcesContent":["module.exports = {\n  finding: require('./finding'),\n  shopping: require('./shopping')\n};"]}

@@ -4,9 +4,9 @@
   "description": "eBay SDK with promise / stream interface",
   "main": "init.js",
   "scripts": {
-    "compile": "babel --source-maps inline, -d dist/ src/",
+    "build": "babel --source-maps inline, -d dist/ src/",
     "lint": "jshint *.js src/*.js",
-    "test": "npm run compile && mocha --require source-map-support/register --compilers js:babel-core/register",
+    "test": "npm run build && mocha --require source-map-support/register --compilers js:babel-core/register",
     "prepublish": "npm run test"
   },
   "keywords": [
@@ -20,8 +20,8 @@
     "lodash": "^4.0.0",
     "moment": "^2.14.1",
     "qs": "git+https://github.com/katsuroo/qs.git",
-    "request": "^2.67.0",
-    "request-promise": "^2.0.0"
+    "request": "2.67.0",
+    "request-promise": "2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
