@@ -1,4 +1,4 @@
-const Ebay = require('./dist/index.js');
+const Ebay = require('./dist/index.js').default;
 
 // Factory function for initializing module
 module.exports = function(options) {
