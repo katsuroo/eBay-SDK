@@ -1,10 +1,10 @@
-import request from 'request-promise';
+import {Request} from './request';
 import moment from 'moment';
 import qs from 'qs';
 import {expect} from 'chai';
 import {cloneDeep, castArray, set, get, find, isEmpty, range} from 'lodash';
 
-class Query {
+export default class Query {
   constructor(endpoint, options) {
     this._endpoint           = endpoint;
     this._options            = cloneDeep(options);
@@ -53,9 +53,10 @@ class Query {
     return this;
   }
   
-  /*
-   Splits query by making new queries with smaller time blocks
-   Used to overcome eBay 10000 entry return limit
+  /**
+   * Splits query into smaller chunks;
+   * @param {Number} parts
+   * @returns {Request}
    */
   split(parts) {
     const endTimeFrom = get(this.getFilter('EndTimeFrom'), 'value'),
@@ -76,12 +77,9 @@ class Query {
     });
   }
   
-  call() {
+  invoke() {
     const queryString = qs.stringify(this._options, {delimiter: '&'});
     
-    return request(this._endpoint + '?' + queryString, {json: true});
+    return new Request(this._endpoint + '?' + queryString, {json: true});
   }
 }
-
-
-export default Query;

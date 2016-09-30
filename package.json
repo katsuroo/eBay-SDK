@@ -1,6 +1,6 @@
 {
   "name": "ebay-sdk",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "eBay SDK with promise / stream interface",
   "main": "init.js",
   "scripts": {
@@ -20,8 +20,8 @@
     "lodash": "^4.0.0",
     "moment": "^2.14.1",
     "qs": "git+https://github.com/katsuroo/qs.git",
-    "request": "2.67.0",
-    "request-promise": "2.0.0"
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",

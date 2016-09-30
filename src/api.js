@@ -1,20 +1,20 @@
-import Request from './request';
+import {EbayRequest} from './request';
 import {expect} from 'chai';
 import {extend, transform, isPlainObject} from './util';
 
-class Api {
+export class EbayOperation {
   constructor(endpoint, apiList, requiredFields) {
     
     return query => {
       const options = extend({}, requiredFields, normalizeQuery(query, apiList));
-      return new Request(endpoint, options);
+      return new EbayRequest(endpoint, options);
     };
     
   }
 }
 
 /** Validates query and prepends @ to attributes fields */
-function normalizeQuery(query, apiList) {
+export function normalizeQuery(query, apiList) {
   
   return transform(query, (result, value, field) => {
     const matchedField = apiList[field];
@@ -33,5 +33,3 @@ function normalizeQuery(query, apiList) {
     return result[normalizedField] = value;
   });
 }
-
-module.exports = {Api, normalizeQuery};

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import mock from './mocks/server';
 import {each, values} from '../dist/util';
-import {normalizeQuery, Api} from '../dist/api';
+import {normalizeQuery, EbayOperation} from '../dist/api';
 import apiList from '../dist/definitions/index';
 import {fieldNames} from '../dist/constants';
 
@@ -17,7 +17,7 @@ describe('Api', () => {
 
     mock(host, path, {});
 
-    const call = new Api(operation, host + path, api, profile)();
+    const call = new EbayOperation(operation, host + path, api, profile)();
 
     assert.property(call, 'then');
     assert.property(call, 'on');

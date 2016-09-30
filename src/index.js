@@ -1,10 +1,10 @@
-import {Api} from './api';
+import {EbayOperation} from './api';
 import apiList from './definitions/index.js';
 import {endpoints, fieldNames, serviceVersions} from './constants';
 import {expect} from 'chai';
 import {keys, each, lowerFirst, get} from './util';
 
-class Ebay {
+export default class Ebay {
   constructor({devKey, responseFormat = 'JSON', serviceVersion, sandbox}) {
     expect(devKey, 'devKey').to.exist;
     expect(responseFormat, 'responseFormat').to.match(/json|xml/i);
@@ -23,10 +23,8 @@ class Ebay {
           [field.responseFormat]: responseFormat
         };
 
-        this[lowerFirst(operation)] = new Api(endpoint[service], apiList[service][operation], requiredFields);
+        this[lowerFirst(operation)] = new EbayOperation(endpoint[service], apiList[service][operation], requiredFields);
       });
     });
   }
 }
-
-module.exports = Ebay;

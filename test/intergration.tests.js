@@ -5,7 +5,7 @@ import _ from '../dist/util';
 
 describe('Integration tests', function() {
   this.timeout(10000);
-  
+
   const options = {
     devKey        : 'devdummy-24f2-47f4-a685-25d207cf23fe',
     responseFormat: 'JSON',

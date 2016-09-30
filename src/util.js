@@ -44,5 +44,3 @@ function deepMerge(result, ...sources) {
 _.mixin({pickDeep, deepMerge});
 
 module.exports = _;
-
-//export default _;
